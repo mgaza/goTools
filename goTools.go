@@ -2,7 +2,7 @@ package goTools
 
 import "log"
 
-func checkError(message string, err error) {
+func CheckError(message string, err error) {
 	if err != nil {
 		log.Fatal(message, err)
 	}
