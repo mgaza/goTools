@@ -9,9 +9,11 @@
 package goTools
 
 import (
+	"encoding/csv"
 	"fmt"
 	"io/fs"
 	"log"
+	"os"
 	"path/filepath"
 	"regexp"
 )
@@ -53,4 +55,23 @@ func FilePathWalker(filePath string, extfile string) []string {
 
 	CheckErrorFatal("error walking the path: ", err)
 	return paths
+}
+
+// Creates, Opens, and writes to a new file for csv readers
+func OpenAndWriteCSVFile(file string, outdirectory string, content [][]string) {
+	writefilepath := outdirectory + "\\" + file
+	writefile, err := os.Create(writefilepath)
+	CheckErrorFatal("Could not create writefile: ", err)
+	defer CloseFile(writefile)
+
+	w := csv.NewWriter(writefile)
+	// defer w.Flush()
+
+	w.WriteAll(content)
+}
+
+// Call to close and Open File Path
+func CloseFile(f *os.File) {
+	err := f.Close()
+	CheckErrorFatal("could not close file: ", err)
 }
