@@ -14,7 +14,7 @@ func CheckErrorFatal(message string, err error) {
 	}
 }
 
-func filePathWalker(filePath string, extfile string) []string {
+func FilePathWalker(filePath string, extfile string) []string {
 	re := regexp.MustCompile(extfile)
 	var paths []string
 
