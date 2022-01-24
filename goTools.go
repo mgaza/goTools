@@ -16,7 +16,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 )
 
 // Use to check for errors that should
@@ -38,10 +37,14 @@ func CheckErrorNonFatal(message string, err error) {
 // The correct format to be read in for this function is:
 //       countyname_dddd-dd-dd_dddd-dd-dd.csv - d for digit (start and end dates)
 //
-// Should return dddd-dd-dd_dddd-dd-dd to variable
+// Should return dddddddd_dddddddd to variable
 func GetExportYearMonth(fullPath string) string {
-	fullPathSplit := strings.Split(fullPath, "\\")
-	return fullPathSplit[len(fullPathSplit)-1][strings.Index(fullPathSplit[len(fullPathSplit)-1], "_")+1 : strings.LastIndex(fullPathSplit[len(fullPathSplit)-1], ".")]
+	regVar := `(?P<startyear>\d{4})-(?P<startmonth>\d{2})-(?P<startday>\d{2})_(?P<endyear>\d{4})-(?P<endmonth>\d{2})-(?P<endday>\d{2})\.csv`
+	re := regexp.MustCompile(regVar)
+	matches := re.FindStringSubmatch(fullPath)
+	newDateFileName := matches[1] + matches[2] + matches[3] + "_" + matches[4] + matches[5] + matches[6]
+
+	return newDateFileName
 }
 
 // Allows for a slice return of file searches
