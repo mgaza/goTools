@@ -16,6 +16,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 )
 
 // Use to check for errors that should
@@ -32,6 +33,15 @@ func CheckErrorNonFatal(message string, err error) {
 	if err != nil {
 		fmt.Println(message, err)
 	}
+}
+
+// The correct format to be read in for this function is:
+//       countyname_dddd-dd-dd_dddd-dd-dd.csv - d for digit (start and end dates)
+//
+// Should return dddd-dd-dd_dddd-dd-dd to variable
+func GetExportYearMonth(fullPath string) string {
+	fullPathSplit := strings.Split(fullPath, "\\")
+	return fullPathSplit[len(fullPathSplit)-1][strings.Index(fullPathSplit[len(fullPathSplit)-1], "_")+1 : strings.LastIndex(fullPathSplit[len(fullPathSplit)-1], ".")]
 }
 
 // Allows for a slice return of file searches
