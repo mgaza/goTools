@@ -41,10 +41,18 @@ func CheckErrorNonFatal(message string, err error) {
 func GetExportYearMonth(fullPath string) string {
 	regVar := `(?P<startyear>\d{4})-(?P<startmonth>\d{2})-(?P<startday>\d{2})_(?P<endyear>\d{4})-(?P<endmonth>\d{2})-(?P<endday>\d{2})\.csv`
 	re := regexp.MustCompile(regVar)
-	matches := re.FindStringSubmatch(fullPath)
-	newDateFileName := matches[1] + matches[2] + matches[3] + "_" + matches[4] + matches[5] + matches[6]
+	matched, err := regexp.MatchString(regVar, fullPath)
 
-	return newDateFileName
+	CheckErrorFatal("There's a problem with the date: ", err)
+
+	if matched {
+		matches := re.FindStringSubmatch(fullPath)
+		newDateFileName := matches[1] + matches[2] + matches[3] + "_" + matches[4] + matches[5] + matches[6]
+
+		return newDateFileName
+	} else {
+		return "nodate"
+	}
 }
 
 // Allows for a slice return of file searches
