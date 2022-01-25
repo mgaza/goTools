@@ -38,8 +38,8 @@ func CheckErrorNonFatal(message string, err error) {
 //       countyname_dddd-dd-dd_dddd-dd-dd.csv - d for digit (start and end dates)
 //
 // Should return dddddddd_dddddddd to variable
-func GetExportYearMonth(fullPath string) string {
-	regVar := `(?P<startyear>\d{4})-(?P<startmonth>\d{2})-(?P<startday>\d{2})_(?P<endyear>\d{4})-(?P<endmonth>\d{2})-(?P<endday>\d{2})\.csv`
+func GetExportYearMonth(fullPath string) (string, string) {
+	regVar := `(?P<county>[a-z]+|[a-z]+_[a-z]+)_(?P<startyear>\d{4})-(?P<startmonth>\d{2})-(?P<startday>\d{2})_(?P<endyear>\d{4})-(?P<endmonth>\d{2})-(?P<endday>\d{2})\.csv`
 	re := regexp.MustCompile(regVar)
 	matched, err := regexp.MatchString(regVar, fullPath)
 
@@ -47,11 +47,12 @@ func GetExportYearMonth(fullPath string) string {
 
 	if matched {
 		matches := re.FindStringSubmatch(fullPath)
-		newDateFileName := matches[1] + matches[2] + matches[3] + "_" + matches[4] + matches[5] + matches[6]
+		countyName := matches[1]
+		newDateFileName := matches[2] + matches[3] + matches[4] + "_" + matches[5] + matches[6] + matches[7]
 
-		return newDateFileName
+		return countyName, newDateFileName
 	} else {
-		return "nodate"
+		return "county", "nodate"
 	}
 }
 
