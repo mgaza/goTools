@@ -37,8 +37,8 @@ func CheckErrorNonFatal(message string, err error) {
 // The correct format to be read in for this function is:
 //       countyname_dddd-dd-dd_dddd-dd-dd.csv - d for digit (start and end dates)
 //
-// Should return dddddddd_dddddddd to variable
-func GetExportYearMonth(fullPath string) (string, string) {
+// Should return countyname and dddddddd_dddddddd to two variables
+func GetExportCountyYearMonth(fullPath string) (string, string) {
 	regVar := `(?P<county>[a-z]+|[a-z]+_[a-z]+)_(?P<startyear>\d{4})-(?P<startmonth>\d{2})-(?P<startday>\d{2})_(?P<endyear>\d{4})-(?P<endmonth>\d{2})-(?P<endday>\d{2})\.csv`
 	re := regexp.MustCompile(regVar)
 	matched, err := regexp.MatchString(regVar, fullPath)
