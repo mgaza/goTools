@@ -1,4 +1,3 @@
 # goTools
 developer tools used for any goLang file
-
-## idk
+mainly internal use for personal projects to save from copy/paste
